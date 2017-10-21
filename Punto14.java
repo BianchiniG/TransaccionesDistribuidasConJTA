@@ -1,4 +1,4 @@
-import java.beans.Statement;
+import java.sql.Statement;
 import java.sql.SQLException;
 
 import javax.transaction.xa.XAException;
@@ -84,8 +84,9 @@ public class Punto14{
         }
     }
 
-    public static Boolean realizaTransaccion(XAResource res, Xid xid) {
-        ret = res.prepare(xid);
+    public static Boolean realizaTransaccion(XAResource res, Xid xid) throws XAException {
+        int ret = res.prepare(xid);
+
         if (ret == XAResource.XA_OK) {
             res.commit(xid, false);
             return true;

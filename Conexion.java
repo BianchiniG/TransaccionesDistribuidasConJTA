@@ -13,16 +13,16 @@ import org.postgresql.xa.*;
 
 public class Conexion {
 	
-    public static byte[] branch = "0x01";
+    public static byte[] branch = {0x01};
 	private long alan = 713349;
-	private XADataSource xaDS;
+	private PGXADataSource xaDS;
 	private XAConnection xaCon;
 	private XAResource xaRes;
 	private Connection conn;
 	private Xid xid;
 
-	public void Conexion(String serverName, String dataBaseName, String userNameDS, String userNameCon, String passwd) {
-		branch[0] = branch[0] + ((byte) 1);  // TODO Ver documentacion.
+	public Conexion(String serverName, String dataBaseName, String userNameDS, String userNameCon, String passwd) {
+		branch[0] = ((byte) branch[0]) + 0x01;  // TODO Ver documentacion.
 		this.setDataSource(serverName, dataBaseName, userNameDS);
 		this.setXAConexion(userNameCon, passwd);
 		this.setXid(branch);
