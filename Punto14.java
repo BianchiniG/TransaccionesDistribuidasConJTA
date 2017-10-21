@@ -7,10 +7,10 @@ import javax.transaction.xa.Xid;
 
 public class Punto14{
 
-    public static final String ip_alan = "192.168.2.117";
-    public static final String ip_emiliano = "192.168.2.112";
-    public static final String ip_german = "192.168.2.129";
-    public static final String ip_ian = "192.168.2.69";
+    public static final String ip_alan = "192.168.1.39";
+    public static final String ip_emiliano = "192.168.1.37";
+    public static final String ip_german = "192.168.1.36";
+    public static final String ip_ian = "192.168.1.42";
 
     public static void main(String[] argv) {
         try {

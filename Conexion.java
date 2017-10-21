@@ -15,22 +15,24 @@ public class Conexion {
 
   public static byte[] branch = {0x01};
 	private long alan = 713349;
-	private PGXADataSource xaDS;
+	private PGXADataSource xaDS = new PGXADataSource();
 	private XAConnection xaCon;
 	private XAResource xaRes;
 	private Connection conn;
 	private Xid xid;
 
 	public Conexion(String serverName, String dataBaseName, String userNameDS, String userNameCon, String passwd) throws SQLException{
-    byte[] aux = {0x01};
-    int sumando1 = (int) branch[0];
-    int sumando2 = (int) aux[0];
-    int resultado = sumando1 + sumando2;
-    branch[0] = (byte) resultado;
+		byte[] aux = {0x01};
+		int sumando1 = (int) branch[0];
+		int sumando2 = (int) aux[0];
+		int resultado = sumando1 + sumando2;
+		branch[0] = (byte) resultado;
+		System.out.println(serverName);
 		this.setDataSource(serverName, dataBaseName, userNameDS);
 		this.setXAConexion(userNameCon, passwd);
 		this.setXid(branch);
 		this.conn = xaCon.getConnection();
+		this.setResource();
 	}
 
 	public void setDataSource(String serverName, String dataBaseName, String userName)throws SQLException{
