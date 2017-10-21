@@ -3,17 +3,17 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.*;
- 
+
 import javax.sql.DataSource;
 import javax.sql.XADataSource;
- 
+
 import javax.sql.XAConnection;
 import org.postgresql.xa.*;
 
 
 public class Conexion {
-	
-    public static byte[] branch = {0x01};
+
+  public static byte[] branch = {0x01};
 	private long alan = 713349;
 	private PGXADataSource xaDS;
 	private XAConnection xaCon;
@@ -22,7 +22,11 @@ public class Conexion {
 	private Xid xid;
 
 	public Conexion(String serverName, String dataBaseName, String userNameDS, String userNameCon, String passwd) {
-		branch[0] = ((byte) branch[0]) + 0x01;  // TODO Ver documentacion.
+    byte[] aux = {0x01};
+    int sumando1 = (int) branch[0];
+    int sumando2 = (int) aux[0];
+    int resultado = sumando1 + sumando2;
+    branch[0] = (byte) resultado;  // TODO Ver documentacion.
 		this.setDataSource(serverName, dataBaseName, userNameDS);
 		this.setXAConexion(userNameCon, passwd);
 		this.setXid(branch);
@@ -67,6 +71,3 @@ public class Conexion {
 		return this.conn;
 	}
 }
-
-
-
