@@ -1,5 +1,7 @@
 import java.beans.Statement;
+import java.sql.SQLException;
 
+import javax.transaction.xa.XAException;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
 
@@ -82,13 +84,13 @@ public class Punto14{
         }
     }
 
-    public Boolean realizaTransaccion(XAResource res, Xid xid) {
+    public static Boolean realizaTransaccion(XAResource res, Xid xid) {
         ret = res.prepare(xid);
         if (ret == XAResource.XA_OK) {
             res.commit(xid, false);
-            return True;
+            return true;
         }
-        return False;
+        return false;
     }
 }
 
