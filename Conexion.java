@@ -21,12 +21,12 @@ public class Conexion {
 	private Connection conn;
 	private Xid xid;
 
-	public Conexion(String serverName, String dataBaseName, String userNameDS, String userNameCon, String passwd) {
+	public Conexion(String serverName, String dataBaseName, String userNameDS, String userNameCon, String passwd) throws SQLException{
     byte[] aux = {0x01};
     int sumando1 = (int) branch[0];
     int sumando2 = (int) aux[0];
     int resultado = sumando1 + sumando2;
-    branch[0] = (byte) resultado;  // TODO Ver documentacion.
+    branch[0] = (byte) resultado;
 		this.setDataSource(serverName, dataBaseName, userNameDS);
 		this.setXAConexion(userNameCon, passwd);
 		this.setXid(branch);
@@ -43,7 +43,7 @@ public class Conexion {
 		return this.xaDS;
 	}
 
-	public void setXAConexion(String userName, String passwd){
+	public void setXAConexion(String userName, String passwd) throws SQLException{
 		this.xaCon = xaDS.getXAConnection(userName, passwd);
 	}
 
@@ -51,7 +51,7 @@ public class Conexion {
 		return this.xaCon;
 	}
 
-	public void setResource(){
+	public void setResource() throws SQLException{
 		this.xaRes = this.xaCon.getXAResource();
 	}
 
