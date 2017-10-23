@@ -11,6 +11,11 @@ public class Punto14{
     public static String ip_emiliano;
     public static String ip_german;
     public static String ip_ian;
+    
+    
+    public Punto14(){
+        
+    }
 
     public static void main(String[] argv) {
         try {
@@ -107,19 +112,19 @@ public class Punto14{
         return ret == XAResource.XA_OK;
     }
 
-    public void Conectar(int[] Conexiones){
+    public void Conectar(String[] Conexiones){
         
-        this.ip_alan = Conexiones[0];
+        this.ip_alan = (Conexiones[0]);
         this.ip_emiliano = Conexiones[1];
         this.ip_german = Conexiones[2];
         this.ip_ian = Conexiones[3];
     }
 
-    public int Transferir(int Monto, int Origen, int Destino){
+    public int Transferir(int Monto, String Origen, String Destino){    //ver
 
         
         return 5;
     }
 }
 
-}
+
