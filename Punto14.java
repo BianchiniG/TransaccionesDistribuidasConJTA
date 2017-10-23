@@ -45,27 +45,35 @@ public class Punto14{
             conexion_ian.getResource().start(conexion_ian.getXid(), XAResource.TMNOFLAGS);
 
             //
-            stmt_alan.executeUpdate("insert into cuentas (titular) values ('titular 1')");
-            stmt_emiliano.executeUpdate("insert into cuentas (titular) values ('titular 1')");
-            stmt_german.executeUpdate("insert into cuentas (titular) values ('titular 1')");
-            stmt_ian.executeUpdate("insert into cuentas (titular) values ('titular 1')");
+            try{
+              stmt_alan.executeUpdate("insert into cuentas (titular) values ('titular 1')");
+              stmt_emiliano.executeUpdate("insert into cuentas (titular) values ('titular 1')");
+              stmt_german.executeUpdate("insert into cuentas (titular) values ('titular 1')");
+              stmt_ian.executeUpdate("insert into cuentas (titular) values ('titular 1')");
 
-            //
-            conexion_alan.getResource().end(conexion_alan.getXid(), XAResource.TMSUCCESS);
-            conexion_emiliano.getResource().end(conexion_emiliano.getXid(), XAResource.TMSUCCESS);
-            conexion_german.getResource().end(conexion_german.getXid(), XAResource.TMSUCCESS);
-            conexion_ian.getResource().end(conexion_ian.getXid(), XAResource.TMSUCCESS);
+              //
+              conexion_alan.getResource().end(conexion_alan.getXid(), XAResource.TMSUCCESS);
+              conexion_emiliano.getResource().end(conexion_emiliano.getXid(), XAResource.TMSUCCESS);
+              conexion_german.getResource().end(conexion_german.getXid(), XAResource.TMSUCCESS);
+              conexion_ian.getResource().end(conexion_ian.getXid(), XAResource.TMSUCCESS);
 
-            //
-            if ( realizaTransaccionPrepare(conexion_alan.getResource(), conexion_alan.getXid()) &&
-            realizaTransaccionPrepare(conexion_emiliano.getResource(), conexion_emiliano.getXid()) &&
-            realizaTransaccionPrepare(conexion_german.getResource(), conexion_german.getXid()) &&
-            realizaTransaccionPrepare(conexion_ian.getResource(), conexion_ian.getXid()) ){
-              conexion_alan.getResource().commit(conexion_alan.getXid(),false);
-              conexion_emiliano.getResource().commit(conexion_emiliano.getXid(),false);
-              conexion_german.getResource().commit(conexion_german.getXid(),false);
-              conexion_ian.getResource().commit(conexion_ian.getXid(),false);
-            }else{
+              //
+              if ( realizaTransaccionPrepare(conexion_alan.getResource(), conexion_alan.getXid()) &&
+              realizaTransaccionPrepare(conexion_emiliano.getResource(), conexion_emiliano.getXid()) &&
+              realizaTransaccionPrepare(conexion_german.getResource(), conexion_german.getXid()) &&
+              realizaTransaccionPrepare(conexion_ian.getResource(), conexion_ian.getXid()) ){
+                conexion_alan.getResource().commit(conexion_alan.getXid(),false);
+                conexion_emiliano.getResource().commit(conexion_emiliano.getXid(),false);
+                conexion_german.getResource().commit(conexion_german.getXid(),false);
+                conexion_ian.getResource().commit(conexion_ian.getXid(),false);
+              }else{
+                conexion_alan.getResource().rollback(conexion_alan.getXid());
+                conexion_emiliano.getResource().rollback(conexion_emiliano.getXid());
+                conexion_german.getResource().rollback(conexion_german.getXid());
+                conexion_ian.getResource().rollback(conexion_ian.getXid());
+              }
+            }catch(SQLException e){
+              System.out.println("Hubo falla en el Update");
               conexion_alan.getResource().rollback(conexion_alan.getXid());
               conexion_emiliano.getResource().rollback(conexion_emiliano.getXid());
               conexion_german.getResource().rollback(conexion_german.getXid());
