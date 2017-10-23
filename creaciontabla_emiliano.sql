@@ -26,7 +26,7 @@ GRANT SELECT,INSERT ON TABLE cuentas TO emiliano;
 GRANT ALL ON SEQUENCE cuentas_id_seq TO postgres;
 GRANT USAGE ON SEQUENCE cuentas_id_seq TO emiliano;
 
-INSERT INTO cuentas  VALUES ('Raul', TRUE, 785), ('Ada', FALSE, 700), ('Roberto', FALSE, 800), ('Ricardo',FALSE,1000000);
+INSERT INTO cuentas  VALUES (DEFAULT,'Raul',DEFAULT, TRUE, 785), (DEFAULT,'Ada',DEFAULT, FALSE, 700), (DEFAULT,'Roberto',DEFAULT, FALSE, 800), (DEFAULT,'Ricardo',DEFAULT,FALSE,1000000);
 
 -- Para mirar antes y despues de correr "ejemplo1.java"
 select * from cuentas
