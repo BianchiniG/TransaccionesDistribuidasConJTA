@@ -7,10 +7,10 @@ import javax.transaction.xa.Xid;
 
 public class Punto14{
 
-    public static final String ip_alan = "192.168.1.39";
-    public static final String ip_emiliano = "192.168.1.37";
-    public static final String ip_german = "192.168.1.36";
-    public static final String ip_ian = "192.168.1.42";
+    public static String ip_alan;
+    public static String ip_emiliano;
+    public static String ip_german;
+    public static String ip_ian;
 
     public static void main(String[] argv) {
         try {
@@ -106,5 +106,20 @@ public class Punto14{
         int ret = res.prepare(xid);
         return ret == XAResource.XA_OK;
     }
+
+    public void Conectar(int[] Conexiones){
+        
+        this.ip_alan = Conexiones[0];
+        this.ip_emiliano = Conexiones[1];
+        this.ip_german = Conexiones[2];
+        this.ip_ian = Conexiones[3];
+    }
+
+    public int Transferir(int Monto, int Origen, int Destino){
+
+        
+        return 5;
+    }
+}
 
 }
