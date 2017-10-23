@@ -12,10 +12,10 @@ CREATE TABLE cuentas (
 ALTER TABLE public.cuentas OWNER TO postgres;
 
 CREATE SEQUENCE cuentas_id_seq
-    START WITH 1
+    START WITH 1000
     INCREMENT BY 1
     NO MINVALUE
-    NO MAXVALUE
+    MAXVALUE 1999
     CACHE 1;
 ALTER TABLE public.cuentas_id_seq OWNER TO postgres;
 ALTER SEQUENCE cuentas_id_seq OWNED BY cuentas.id;
