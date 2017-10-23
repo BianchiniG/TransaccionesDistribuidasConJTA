@@ -24,6 +24,7 @@ public class Interfaz_Punto14 extends javax.swing.JFrame {
     public Interfaz_Punto14() {
         initComponents();
         this.principal = new Punto14();
+
     }
 
     /**
@@ -167,11 +168,11 @@ public class Interfaz_Punto14 extends javax.swing.JFrame {
 
     private void jButtonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConectarActionPerformed
             if (!(this.jTextFieldIp.getText().isEmpty())){        // TODO add your handling code here:
-                direcciones[i]=(this.jTextFieldIp.getText());
+                this.direcciones[i]=(this.jTextFieldIp.getText());
                 ++i;
                 if(i==4){
                     i=0;
-                    retornarDirecciones(direcciones);
+                    this.principal.Conectar(direcciones);
                 }
         
             }else{
@@ -181,7 +182,7 @@ public class Interfaz_Punto14 extends javax.swing.JFrame {
 
     private void jButtonTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransferirActionPerformed
             if (!(this.jTextFieldMonto.getText().isEmpty()) && !(this.jTextFieldOrigen.getText().isEmpty()) && !(this.jTextFieldDestino.getText().isEmpty())){   
-                status = principal.Transferir(Integer.parseInt(this.jTextFieldMonto.getText()), this.jTextFieldOrigen.getText(), this.jTextFieldDestino.getText());
+                status = principal.Transferir(Integer.parseInt(this.jTextFieldMonto.getText()), Integer.parseInt(this.jTextFieldOrigen.getText()),Integer.parseInt(this.jTextFieldDestino.getText());
             }else{
                 JOptionPane.showMessageDialog(null, "Debe completar los campos Monto, Origen y Destino.");
             }
@@ -190,11 +191,6 @@ public class Interfaz_Punto14 extends javax.swing.JFrame {
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
             System.exit(0);        // TODO add your handling code here:
     }//GEN-LAST:event_jButtonSalirActionPerformed
-
-    
-    public String[] retornarDirecciones(String[] direcciones){
-        return direcciones;
-    }
     
     /**
      * @param args the command line arguments

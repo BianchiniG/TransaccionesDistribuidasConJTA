@@ -11,101 +11,12 @@ public class Punto14{
     public static String ip_emiliano;
     public static String ip_german;
     public static String ip_ian;
-    
-    
-    public Punto14(){
-        
-    }
+    public Conexion conexion_alan;
+    public Conexion conexion_emiliano;
+    public Conexion conexion_german;
+    public Conexion conexion_ian;
 
-    public static void main(String[] argv) {
-        try {
-            // Creamos las conexiones
-            Conexion conexion_alan = new Conexion(
-                ip_alan,"sitioAlan","postgres",
-                "alan","alan"
-            );
-            Conexion conexion_emiliano = new Conexion(
-                ip_emiliano,"sitioEmiliano","postgres",
-                "emiliano","emiliano"
-            );
-            Conexion conexion_german = new Conexion(
-                ip_german,"sitioGerman","postgres",
-                "german","german"
-            );
-            Conexion conexion_ian = new Conexion(
-                ip_ian,"sitioIan","postgres",
-                "ian","ian"
-            );
-
-            // Creamos los statements
-            Statement stmt_alan = conexion_alan.getConexion().createStatement();
-            Statement stmt_emiliano = conexion_emiliano.getConexion().createStatement();
-            Statement stmt_german = conexion_german.getConexion().createStatement();
-            Statement stmt_ian = conexion_ian.getConexion().createStatement();
-
-            //
-            conexion_alan.getResource().start(conexion_alan.getXid(), XAResource.TMNOFLAGS);
-            conexion_emiliano.getResource().start(conexion_emiliano.getXid(), XAResource.TMNOFLAGS);
-            conexion_german.getResource().start(conexion_german.getXid(), XAResource.TMNOFLAGS);
-            conexion_ian.getResource().start(conexion_ian.getXid(), XAResource.TMNOFLAGS);
-
-            //
-            try{
-              stmt_alan.executeUpdate("insert into cuentas (titular) values ('titular 1')");
-              stmt_emiliano.executeUpdate("insert into cuentas (titular) values ('titular 1')");
-              stmt_german.executeUpdate("insert into cuentas (titular) values ('titular 1')");
-              stmt_ian.executeUpdate("insert into cuentas (titular) values ('titular 1')");
-
-              //
-              conexion_alan.getResource().end(conexion_alan.getXid(), XAResource.TMSUCCESS);
-              conexion_emiliano.getResource().end(conexion_emiliano.getXid(), XAResource.TMSUCCESS);
-              conexion_german.getResource().end(conexion_german.getXid(), XAResource.TMSUCCESS);
-              conexion_ian.getResource().end(conexion_ian.getXid(), XAResource.TMSUCCESS);
-
-              //
-              if ( realizaTransaccionPrepare(conexion_alan.getResource(), conexion_alan.getXid()) &&
-              realizaTransaccionPrepare(conexion_emiliano.getResource(), conexion_emiliano.getXid()) &&
-              realizaTransaccionPrepare(conexion_german.getResource(), conexion_german.getXid()) &&
-              realizaTransaccionPrepare(conexion_ian.getResource(), conexion_ian.getXid()) ){
-                conexion_alan.getResource().commit(conexion_alan.getXid(),false);
-                conexion_emiliano.getResource().commit(conexion_emiliano.getXid(),false);
-                conexion_german.getResource().commit(conexion_german.getXid(),false);
-                conexion_ian.getResource().commit(conexion_ian.getXid(),false);
-              }else{
-                conexion_alan.getResource().rollback(conexion_alan.getXid());
-                conexion_emiliano.getResource().rollback(conexion_emiliano.getXid());
-                conexion_german.getResource().rollback(conexion_german.getXid());
-                conexion_ian.getResource().rollback(conexion_ian.getXid());
-              }
-            }catch(SQLException e){
-              System.out.println("Hubo falla en el Update");
-              conexion_alan.getResource().rollback(conexion_alan.getXid());
-              conexion_emiliano.getResource().rollback(conexion_emiliano.getXid());
-              conexion_german.getResource().rollback(conexion_german.getXid());
-              conexion_ian.getResource().rollback(conexion_ian.getXid());
-            }
-
-            //
-            stmt_alan.close();
-            stmt_emiliano.close();
-            stmt_german.close();
-            stmt_ian.close();
-            conexion_alan.getConexion().close();
-            conexion_emiliano.getConexion().close();
-            conexion_german.getConexion().close();
-            conexion_ian.getConexion().close();
-            conexion_alan.getXAConexion().close();
-            conexion_emiliano.getXAConexion().close();
-            conexion_german.getXAConexion().close();
-            conexion_ian.getXAConexion().close();
-
-        }catch (XAException e) {
-            e.printStackTrace();
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-        }
-    }
+    public Punto14(){};
 
     public static Boolean realizaTransaccionPrepare(XAResource res, Xid xid) throws XAException {
         int ret = res.prepare(xid);
@@ -118,12 +29,84 @@ public class Punto14{
         this.ip_emiliano = Conexiones[1];
         this.ip_german = Conexiones[2];
         this.ip_ian = Conexiones[3];
+
+        this.conexion_alan = new Conexion(
+            this.ip_alan,"sitioAlan","postgres",
+            "alan","alan"
+        );
+        this.conexion_emiliano = new Conexion(
+            this.ip_emiliano,"sitioEmiliano","postgres",
+            "emiliano","emiliano"
+        );
+        this.conexion_german = new Conexion(
+            this.ip_german,"sitioGerman","postgres",
+            "german","german"
+        );
+        this.conexion_ian = new Conexion(
+            this.ip_ian,"sitioIan","postgres",
+            "ian","ian"
+        );
     }
 
-    public int Transferir(int Monto, String Origen, String Destino){    //ver
+    public Conexion determinar_conexion(int idCuenta){
+        if (idCuenta >= 1000 && idCuenta < 2000){
+            return this.conexion_alan; 
+         }else if (idCuenta >= 2000 && idCuenta < 3000){
+            return this.conexion_emiliano;
+         }else if (idCuenta >= 3000 && idCuenta < 4000){
+            return this.conexion_german;
+         }else if (idCuenta >= 4000 && idCuenta < 5000){
+            return this.conexion_ian;
+         }else{
+             System.out.println("ID FUERA DE RANGO");
+             return null;
+         }
+    }
 
+    public int Transferir(int monto, int idOrigen, int idDestino){
+        try {
+            Conexion origen = determinar_conexion(idOrigen);
+            Conexion destino = determinar_conexion(idDestino);
+            
+            Statement stmt_origen = origen.getConexion().createStatement(); 
+            Statement stmt_destino = destino.getConexion().createStatement();
+
+            origen.getResource().start(origen.getXid(), XAResource.TMNOFLAGS);
+            destino.getResource().start(destino.getXid(), XAResource.TMNOFLAGS);
+            try{
+                stmt_origen.executeUpdate("UPDATE cuentas SET saldo = saldo -" + monto);
+                stmt_destino.executeUpdate("UPDATE cuentas SET saldo = saldo +" + monto);
+
+                origen.getResource().end(origen.getXid(), XAResource.TMSUCCESS);
+                destino.getResource().end(destino.getXid(), XAResource.TMSUCCESS);
         
-        return 5;
+                if ( realizaTransaccionPrepare(origen.getResource(), origen.getXid()) &&
+                realizaTransaccionPrepare(destino.getResource(), destino.getXid())){
+                    origen.getResource().commit(origen.getXid(),false);
+                    destino.getResource().commit(destino.getXid(),false);
+                }else{
+                    origen.getResource().rollback(origen.getXid());
+                    destino.getResource().rollback(destino.getXid());
+                }
+            }catch(SQLException e){
+                System.out.println("Hubo falla en el Update");
+                origen.getResource().rollback(origen.getXid());
+                destino.getResource().rollback(destino.getXid());
+            }
+            stmt_origen.close();
+            stmt_destino.close();
+            origen.getConexion().close();
+            destino.getConexion().close();
+            origen.getXAConexion().close();
+            destino.getXAConexion().close();
+            return 0;
+        }catch (XAException e) {
+            e.printStackTrace();
+            return 1;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return 1;
+        }
     }
 }
 
