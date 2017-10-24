@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import javax.transaction.xa.XAException;
 import javax.transaction.xa.XAResource;
 import javax.transaction.xa.Xid;
+import org.postgresql.util.PSQLException;
 
 public class Punto14{
 
@@ -29,23 +30,27 @@ public class Punto14{
         this.ip_emiliano = Conexiones[1];
         this.ip_german = Conexiones[2];
         this.ip_ian = Conexiones[3];
-
-        this.conexion_alan = new Conexion(
-            this.ip_alan,"sitioAlan","postgres",
-            "alan","alan"
-        );
-        this.conexion_emiliano = new Conexion(
-            this.ip_emiliano,"sitioEmiliano","postgres",
-            "emiliano","emiliano"
-        );
-        this.conexion_german = new Conexion(
-            this.ip_german,"sitioGerman","postgres",
-            "german","german"
-        );
-        this.conexion_ian = new Conexion(
-            this.ip_ian,"sitioIan","postgres",
-            "ian","ian"
-        );
+        
+        try{
+            this.conexion_alan = new Conexion(
+                this.ip_alan,"sitioAlan","postgres",
+                "alan","alan"
+            );
+            this.conexion_emiliano = new Conexion(
+                this.ip_emiliano,"sitioEmiliano","postgres",
+                "emiliano","emiliano"
+            );
+            this.conexion_german = new Conexion(
+                this.ip_german,"sitioGerman","postgres",
+                "german","german"
+            );
+            this.conexion_ian = new Conexion(
+                this.ip_ian,"sitioIan","postgres",
+                "ian","ian"
+            );
+        }catch(SQLException e){
+            System.out.println("Problema durante la conexion");
+        }
     }
 
     public Conexion determinar_conexion(int idCuenta){
@@ -74,8 +79,8 @@ public class Punto14{
             origen.getResource().start(origen.getXid(), XAResource.TMNOFLAGS);
             destino.getResource().start(destino.getXid(), XAResource.TMNOFLAGS);
             try{
-                stmt_origen.executeUpdate("UPDATE cuentas SET saldo = saldo -" + monto);
-                stmt_destino.executeUpdate("UPDATE cuentas SET saldo = saldo +" + monto);
+                stmt_origen.executeUpdate("UPDATE cuentas SET saldo = saldo -" + monto + "WHERE id=" + idOrigen);
+                stmt_destino.executeUpdate("UPDATE cuentas SET saldo = saldo +" + monto + "WHERE id=" + idDestino);
 
                 origen.getResource().end(origen.getXid(), XAResource.TMSUCCESS);
                 destino.getResource().end(destino.getXid(), XAResource.TMSUCCESS);
@@ -88,7 +93,12 @@ public class Punto14{
                     origen.getResource().rollback(origen.getXid());
                     destino.getResource().rollback(destino.getXid());
                 }
+            }catch(PSQLException e){
+                System.out.println("No existe dinero suficiente para realizar la transacción");
+                origen.getResource().rollback(origen.getXid());
+                destino.getResource().rollback(destino.getXid());
             }catch(SQLException e){
+                e.printStackTrace();
                 System.out.println("Hubo falla en el Update");
                 origen.getResource().rollback(origen.getXid());
                 destino.getResource().rollback(destino.getXid());

@@ -16,7 +16,7 @@ public class Interfaz_Punto14 extends javax.swing.JFrame {
     /**
      * Creates new form Interfaz_Punto14
      */
-    private String[] direcciones = new String[4];
+    private String[] direcciones = {"192.168.2.117","192.168.2.112","192.168.2.129","192.168.2.69"};
     private int i = 0;
     Punto14 principal;
     int status;
@@ -167,7 +167,7 @@ public class Interfaz_Punto14 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConectarActionPerformed
-            if (!(this.jTextFieldIp.getText().isEmpty())){        // TODO add your handling code here:
+            /*if (!(this.jTextFieldIp.getText().isEmpty())){        // TODO add your handling code here:
                 this.direcciones[i]=(this.jTextFieldIp.getText());
                 ++i;
                 if(i==4){
@@ -177,12 +177,13 @@ public class Interfaz_Punto14 extends javax.swing.JFrame {
         
             }else{
                 JOptionPane.showMessageDialog(null, "Debe especificar una dirección ip a concectar.");
-            }
+            }*/
+            this.principal.Conectar(this.direcciones);
     }//GEN-LAST:event_jButtonConectarActionPerformed
 
     private void jButtonTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransferirActionPerformed
             if (!(this.jTextFieldMonto.getText().isEmpty()) && !(this.jTextFieldOrigen.getText().isEmpty()) && !(this.jTextFieldDestino.getText().isEmpty())){   
-                status = principal.Transferir(Integer.parseInt(this.jTextFieldMonto.getText()), Integer.parseInt(this.jTextFieldOrigen.getText()),Integer.parseInt(this.jTextFieldDestino.getText());
+                status = principal.Transferir(Integer.parseInt(this.jTextFieldMonto.getText()), Integer.parseInt(this.jTextFieldOrigen.getText()),Integer.parseInt(this.jTextFieldDestino.getText()));
             }else{
                 JOptionPane.showMessageDialog(null, "Debe completar los campos Monto, Origen y Destino.");
             }
